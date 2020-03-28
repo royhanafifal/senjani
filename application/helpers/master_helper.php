@@ -18,3 +18,19 @@ function get($params)
         error('Silahkan mengisi kolom '.$params.' terlebih dahulu');
     }
 }
+
+  //Model helper
+  function true($data)
+  {
+      return (object) array(
+          'data'=>$data,
+          'success'=>true
+      );
+  }
+
+  function false()
+  {
+      return (object) array(
+          "success" => false
+      );
+  }
