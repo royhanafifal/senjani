@@ -10,7 +10,7 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('welcome_message');
+        $this->load->view('login');
     }    
 
     public function auth()
@@ -19,26 +19,33 @@ class Login extends CI_Controller {
         $password = $this->post('password');
 
         $result = $this->Login_m->get_data($nim);
-        if($result->success){
-            if (password_verify($password, $result->data->password)) {
-                if (!is_null($result->data->date_deleted)) {
+        if(isset($result)){
+            if ($password == $result->password) {
+                if (is_null($result->data_deleted)) {
                     //masuk
-                    $this->load->view('home', $result->data);
+                    $this->session->set_flashdata('msg', 'Selamat datang, anda berhasil masuk');
+                    $this->biodata($nim);
                 }else{
-                    //password salah
-                    $this->session->set_flashdata('msg', 'Maaf password anda salah');
-                    redirect('Login');
+                    //akun sudah dihapus
+                    $this->session->set_flashdata('msg', 'Maaf akun anda sudah dihapus');
+                    redirect(base_url().'login');
                 }
             }else{
-                //akun sudah tidak terdaftar/dihapus
-                $this->session->set_flashdata('msg', 'Maaf akun anda sudah tidak terdaftar/dihapus');
-                redirect('Login');
+                //password salah
+                $this->session->set_flashdata('msg', 'Maaf password anda salah');
+                redirect(base_url().'login');
             }
         }else{
             //akun tidak terdaftar
             $this->session->set_flashdata('msg', 'Maaf akun anda tidak terdaftar');
-            redirect('Login');
+            redirect(base_url().'login');
         }
+    }
+
+    function biodata($nim)
+    {
+        $result = $this->Login_m->get_biodata($nim);
+        $this->load->view('home', $result);
     }
 
     function post($params)
@@ -47,6 +54,7 @@ class Login extends CI_Controller {
             return $_POST[$params];
         }else{
             $this->session->set_flashdata('msg', 'Silahkan mengisi kolom '.$params.' terlebih dahulu');
+            redirect(base_url().'login');
         }
     }
 }

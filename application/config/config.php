@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST'].
+$config['base_url'] = 'http://localhost/sinerbi/';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ $config['base_url'] = (isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERV
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'sinerbi';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
