@@ -10,8 +10,13 @@ class Login extends CI_Controller {
 
     public function index()
     {
-        $nim = post('nim');
-        $password = post('password');
+        $this->load->view('welcome_message');
+    }    
+
+    public function auth()
+    {
+        $nim = $this->post('nim');
+        $password = $this->post('password');
 
         $result = $this->Login_m->get_data($nim);
         if($result->success){
@@ -34,5 +39,14 @@ class Login extends CI_Controller {
             $this->session->set_flashdata('msg', 'Maaf akun anda tidak terdaftar');
             redirect('Login');
         }
-    }    
+    }
+
+    function post($params)
+    {
+        if(!empty($_POST[$params])){
+            return $_POST[$params];
+        }else{
+            $this->session->set_flashdata('msg', 'Silahkan mengisi kolom '.$params.' terlebih dahulu');
+        }
+    }
 }
